@@ -2,7 +2,7 @@
 import geni.portal as portal
 import geni.rspec.pg as rspec
 
-NUM_NODES = 4
+NUM_NODES = 5
 
 pc = portal.Context()
 request = rspec.Request()
