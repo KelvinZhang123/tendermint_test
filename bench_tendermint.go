@@ -1,13 +1,3 @@
-// bench_tendermint.go
-//
-// Usage examples:
-//
-//   # hit a local single-node devnet
-//   go run bench_tendermint.go -addr 127.0.0.1:26657 -n 10000 -c 32
-//
-//   # hit a CloudLab node that listens on the public control IP
-//   go run bench_tendermint.go -addr 155.98.38.94:26657 -n 50000 -c 64 -prefix node0
-//
 // Flags
 //   -addr       RPC host:port of **one** Tendermint node (it will forward to peers)
 //   -n          total number of Tx to send (default 10 000)
@@ -26,7 +16,6 @@ import (
 	"math/rand"
 	"net/http"
 	"sort"
-	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -53,8 +42,8 @@ const contentType = "application/x-www-form-urlencoded"
 
 // makeTx returns a []byte that kvstore understands:  key_i=value_i
 func makeTx(i int) []byte {
-	key := fmt.Sprintf("%s_%d", *prefix, i)
-	val := strconv.Itoa(i)
+	key := fmt.Sprintf("%s_%d_%d", *prefix, i, rand.Int63())
+	val := strings.Repeat("x", 220) // ≈256‑byte tx
 	return []byte(key + "=" + val)
 }
 
